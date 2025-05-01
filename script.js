@@ -15,84 +15,12 @@ const playButtons = document.querySelectorAll('.play-btn');
 const pauseButtons = document.querySelectorAll('.pause-btn');
 const musicPlayers = document.querySelectorAll('.music-player');
 
-// Music Player Functionality
-playButtons.forEach((button, index) => {
-    button.addEventListener('click', function () {
-        // Stop currently playing music (jika bukan yang sekarang)
-        if (playingIndex !== -1 && playingIndex !== index) {
-            resetPlayer(playingIndex);
-        }
-
-        playingIndex = index;
-        const player = musicPlayers[index];
-        const durationDisplay = player.querySelector('.music-duration');
-        const audio = player.querySelector('audio');
-        const totalDuration = parseInt(player.dataset.duration);
-        const minutes = Math.floor(totalDuration / 60);
-        const seconds = totalDuration % 60;
-
-        // Hide play button, show pause button
-        this.style.display = 'none';
-        pauseButtons[index].style.display = 'flex';
-
-        // Play audio (lanjut dari waktu terakhir)
-        audio.play();
-
-        // Start timer
-        audioInterval = setInterval(() => {
-            const currentSecond = Math.floor(audio.currentTime);
-            const currentMinutes = Math.floor(currentSecond / 60);
-            const currentSeconds = currentSecond % 60;
-
-            durationDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' + currentSeconds : currentSeconds} / ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-
-            if (audio.ended) {
-                clearInterval(audioInterval);
-                resetPlayer(index);
-            }
-        }, 1000);
-    });
-});
-
-pauseButtons.forEach((button, index) => {
-    button.addEventListener('click', function () {
-        const player = musicPlayers[index];
-        const audio = player.querySelector('audio');
-
-        // Pause audio only (tidak reset waktu)
-        audio.pause();
-        clearInterval(audioInterval);
-
-        // Show play button, hide pause button
-        this.style.display = 'none';
-        playButtons[index].style.display = 'flex';
-
-        playingIndex = -1;
-    });
-});
-
-
-function resetPlayer(index) {
-    clearInterval(audioInterval);
-
-    const player = musicPlayers[index];
-    const audio = player.querySelector('audio');
-    const durationDisplay = player.querySelector('.music-duration');
-    const totalDuration = parseInt(player.dataset.duration);
-    const minutes = Math.floor(totalDuration / 60);
-    const seconds = totalDuration % 60;
-
-    audio.pause();
-    audio.currentTime = 0;
-
-    durationDisplay.textContent = `0:00 / ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-    pauseButtons[index].style.display = 'none';
-    playButtons[index].style.display = 'flex';
-}
 
 // Variables
 let currentSlide = 0;
 const slideWidth = 100; // percentage
+let playingIndex = -1;
+let audioInterval;
 
 // Functions
 function handleScroll() {
@@ -200,6 +128,82 @@ themeToggle.addEventListener('click', toggleTheme);
 tabBtns.forEach(btn => btn.addEventListener('click', switchTab));
 prevBtn.addEventListener('click', () => moveSlider('prev'));
 nextBtn.addEventListener('click', () => moveSlider('next'));
+
+// Music Player Functionality
+playButtons.forEach((button, index) => {
+    button.addEventListener('click', function () {
+        // Stop currently playing music (jika bukan yang sekarang)
+        if (playingIndex !== -1 && playingIndex !== index) {
+            resetPlayer(playingIndex);
+        }
+
+        playingIndex = index;
+        const player = musicPlayers[index];
+        const durationDisplay = player.querySelector('.music-duration');
+        const audio = player.querySelector('audio');
+        const totalDuration = parseInt(player.dataset.duration);
+        const minutes = Math.floor(totalDuration / 60);
+        const seconds = totalDuration % 60;
+
+        // Hide play button, show pause button
+        this.style.display = 'none';
+        pauseButtons[index].style.display = 'flex';
+
+        // Play audio (lanjut dari waktu terakhir)
+        audio.play();
+
+        // Start timer
+        audioInterval = setInterval(() => {
+            const currentSecond = Math.floor(audio.currentTime);
+            const currentMinutes = Math.floor(currentSecond / 60);
+            const currentSeconds = currentSecond % 60;
+
+            durationDisplay.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' + currentSeconds : currentSeconds} / ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+            if (audio.ended) {
+                clearInterval(audioInterval);
+                resetPlayer(index);
+            }
+        }, 1000);
+    });
+});
+
+pauseButtons.forEach((button, index) => {
+    button.addEventListener('click', function () {
+        const player = musicPlayers[index];
+        const audio = player.querySelector('audio');
+
+        // Pause audio only (tidak reset waktu)
+        audio.pause();
+        clearInterval(audioInterval);
+
+        // Show play button, hide pause button
+        this.style.display = 'none';
+        playButtons[index].style.display = 'flex';
+
+        playingIndex = -1;
+    });
+});
+
+
+function resetPlayer(index) {
+    clearInterval(audioInterval);
+
+    const player = musicPlayers[index];
+    const audio = player.querySelector('audio');
+    const durationDisplay = player.querySelector('.music-duration');
+    const totalDuration = parseInt(player.dataset.duration);
+    const minutes = Math.floor(totalDuration / 60);
+    const seconds = totalDuration % 60;
+
+    audio.pause();
+    audio.currentTime = 0;
+
+    durationDisplay.textContent = `0:00 / ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    pauseButtons[index].style.display = 'none';
+    playButtons[index].style.display = 'flex';
+}
+
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
