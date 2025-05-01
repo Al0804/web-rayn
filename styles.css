@@ -405,25 +405,56 @@ header {
     transition: width 1s ease;
 }
 
-.things-list, .music-list {
-    list-style-position: inside;
-    padding-left: 20px;
+.music-player {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.things-list li, .music-list li {
-    margin-bottom: 10px;
-    position: relative;
+.music-info {
+    flex: 1;
 }
 
-.things-list li::before, .music-list li::before {
-    content: '•';
-    color: var(--accent-color);
+.music-title {
     font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
+    margin-bottom: 5px;
 }
 
+.music-duration {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.music-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.play-btn, .pause-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.play-btn:hover, .pause-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+.pause-btn {
+    display: none;
+}
 /* Typology Section */
 #typology {
     background-color: var(--bg-color);
